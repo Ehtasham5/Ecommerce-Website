@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ShopContext } from '../context/ShopContext'
 import Title from '../components/Title'
 import { assets } from '../assets/assets'
+import CartTotal from '../components/CartTotal'
 
 const Cart = () => {
 
-  const {products, cartItems, currency} = useContext(ShopContext)
+  const {products, cartItems, currency, updateQuantity, navigate} = useContext(ShopContext)
 
   const [cartData, setCartData] = useState([])
 
@@ -14,11 +15,13 @@ const Cart = () => {
 
     for (const items in cartItems) {
       for (const item in cartItems[items]) {
-        tempData.push({
+        if (cartItems[items][item] > 0) {
+          tempData.push({
           _id: items,
           size: item,
           quantity: cartItems[items][item]
-        })
+          })
+        }
       }
     }
 
@@ -50,12 +53,21 @@ const Cart = () => {
                     </div>
                   </div>
                 </div>
-                <input type="number" className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1 mt-2' min={1} defaultValue={item.quantity}/>
-                <img className='w-4 sm:w-5 cursor-pointer' src={assets.bin_icon} alt="" />
+                <input onChange={(e) => e.target.value === "" || e.target.value === "0" ? null : updateQuantity(item._id, item.size, Number(e.target.value))} type="number" className='border max-w-10 sm:max-w-20 px-1 sm:px-2 py-1 mt-2' min={1} defaultValue={item.quantity}/>
+                <img onClick={()=> updateQuantity(item._id, item.size, 0)} className='w-4 sm:w-5 cursor-pointer' src={assets.bin_icon} alt="" />
               </div>
             )
           })
         }
+      </div>
+
+      <div className="flex justify-end my-20">
+        <div className='w-full sm:w-112.5'>
+          <CartTotal />
+          <div className="w-full text-end">
+            <button onClick={()=> navigate('/place-order')} className='bg-black text-white active:bg-gray-700 px-8 py-3 text-sm my-8'>PROCEED TO CHECKOUT</button>
+          </div>
+        </div>
       </div>
 
     </div>
