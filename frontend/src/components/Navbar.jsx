@@ -37,7 +37,7 @@ const Navbar = () => {
 
       </ul>
 
-      <div className='flex items-center gap-6'>
+      <div className='flex items-center gap-6'> 
         <img onClick={() => setShowSearch(true)} src={assets.search_icon} alt="" className='w-4 cursor-pointer'/>
 
         <div className='group relative'>
@@ -63,7 +63,7 @@ const Navbar = () => {
 
       {/* Menu screen for mobile */}
 
-      <div className={`absolute top-0 bottom-0 left-0 right-0 transition-all overflow-hidden bg-white ${visible ? 'w-full' : 'w-0'}`}>
+      <div className={`absolute top-0 bottom-0 left-0 right-0 transition-all overflow-hidden bg-white ${visible ? 'h-screen' : 'h-0'}`}> 
         <div className='flex flex-col text-gray-700'>
           <div onClick={()=> setVisible(false)} className='flex items-center gap-3 p-3 cursor-pointer'>
             <img src={assets.dropdown_icon} className='h-4 rotate-180' alt="" />

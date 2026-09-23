@@ -5,7 +5,7 @@ import { assets } from '../assets/assets'
 import Title from '../components/Title'
 import ProductItem from '../components/ProductItem'
 
-const Collection = () => {
+const Collection = () => { 
 
   const {products, search, showSearch} = useContext(ShopContext)
   const [showFilter, setShowFilter] = useState(false)
@@ -107,7 +107,7 @@ const Collection = () => {
       </div>
 
       {/* Right Side */}
-
+ 
       <div className="flex-1">
 
         <div className='flex justify-between text-base sm:text-2xl mb-4'>
