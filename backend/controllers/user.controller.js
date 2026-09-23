@@ -79,4 +79,19 @@ const userLogin = async (req, res) => {
   }
 };
 
-export { userRegister, userLogin };
+const userAdmin = async (req, res) => {
+  try {
+    const {email , password} = req.body
+    if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASSWORD) {
+      const token = jwt.sign(email+password, process.env.JWT_SECRET)
+      return res.json({success: true, message: "Admin user login successfully",token})
+    } else {
+      return res.json({success: false, message: "Invalid email and password"})
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error in user login controller" });
+  }
+}
+
+export { userRegister, userLogin, userAdmin };

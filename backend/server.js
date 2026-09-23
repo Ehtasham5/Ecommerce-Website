@@ -4,6 +4,7 @@ import cors from "cors";
 import connectDB from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/user.route.js";
+import productRouter from "./routes/product.route.js";
 
 const app = express();
 
@@ -19,7 +20,9 @@ app.use(cors());
 
 // APi end points
 app.use("/api/user", userRouter)
+app.use("/api/product", productRouter)
 
+// Server
 app.listen(port, () => {
   console.log("Server is started on PORT: " + port);
 });
