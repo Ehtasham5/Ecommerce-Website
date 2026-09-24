@@ -6,7 +6,7 @@ import { ShopContext } from '../context/ShopContext'
 const Navbar = () => {
   const [visible, setVisible] = useState(false)
 
-  const {setShowSearch, getCartCount} = useContext(ShopContext)
+  const {setShowSearch, getCartCount, token, logout} = useContext(ShopContext)
   return (
     <div className='flex justify-between items-center py-5 font-medium'>
 
@@ -41,16 +41,18 @@ const Navbar = () => {
         <img onClick={() => setShowSearch(true)} src={assets.search_icon} alt="" className='w-4 cursor-pointer'/>
 
         <div className='group relative'>
-          <Link to="/login">
+          <Link to={token ? "/" : "/login"}>
             <img src={assets.profile_icon} alt="" className='w-4 cursor-pointer'/>
           </Link>
-          <div className='group-hover:block absolute hidden dropdown-menu right-0 pt-4'>
-            <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-700'>
-              <p className='cursor-pointer hover:text-black'>My Profile</p>
-              <p className='cursor-pointer hover:text-black'>Orders</p>
-              <p className='cursor-pointer hover:text-black'>Logout</p>
+          {token && (
+            <div className='group-hover:block absolute hidden dropdown-menu right-0 pt-4'>
+              <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-slate-100 text-gray-700'>
+                <p className='cursor-pointer hover:text-black'>My Profile</p>
+                <Link to='/orders' className='hover:text-black'>Orders</Link>
+                <button type='button' onClick={logout} className='text-left hover:text-black'>Logout</button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <Link to='/cart' className='relative'>

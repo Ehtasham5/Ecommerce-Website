@@ -45,7 +45,11 @@ const userRegister = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    return res.json({ success: true, user });
+    return res.json({
+      success: true,
+      user: { id: user._id, name: user.name, email: user.email },
+      token,
+    });
   } catch (error) {
     return res
       .status(500)
@@ -59,20 +63,26 @@ const userLogin = async (req, res) => {
 
     const user = await userModel.findOne({ email });
 
-    const isValid = await bcrypt.compare(password, user.password)
+    if (!user) {
+      return res.json({ success: false, message: "User not found" });
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      return res.json({message: "please enter a valid password"})
+      return res.json({
+        success: false,
+        message: "Please enter a valid password",
+      });
     }
 
-    if (isValid) {
-      const token = generateToken(user._id);
-      return res.json({ message: "User login successfully", token });
-    } else {
-      return res
-        .status(404)
-        .json({ success: false, message: "User not found" });
-    }
+    const token = generateToken(user._id);
+    return res.json({
+      success: true,
+      message: "User login successfully",
+      user: { id: user._id, name: user.name, email: user.email },
+      token,
+    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "Error in user login controller" });
