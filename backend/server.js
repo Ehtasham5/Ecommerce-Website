@@ -6,6 +6,7 @@ import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/user.route.js";
 import productRouter from "./routes/product.route.js";
 import cartRouter from "./routes/cart.route.js";
+import orderRouter from "./routes/order.route.js";
 
 const app = express();
 
@@ -17,12 +18,31 @@ connectCloudinary()
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:5174")
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
 
 // APi end points
 app.use("/api/user", userRouter)
 app.use("/api/product", productRouter)
 app.use("/api/cart", cartRouter)
+app.use("/api/order", orderRouter)
 
 // Server
 app.listen(port, () => {
