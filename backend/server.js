@@ -10,6 +10,12 @@ import orderRouter from "./routes/order.route.js";
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "https://ecommerce-frontend-flame-ten.vercel.app",
+  })
+);
+
 // App config
 dotenv.config();
 const port = process.env.PORT || 4000;
@@ -19,24 +25,7 @@ connectCloudinary()
 // Middlewares
 app.use(express.json());
 
-const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,http://localhost:5174")
-  .split(',')
-  .map((origin) => origin.trim())
-  .filter(Boolean);
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-        return;
-      }
-
-      callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-  })
-);
 
 // APi end points
 app.use("/api/user", userRouter)
