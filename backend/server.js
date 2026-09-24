@@ -1,5 +1,7 @@
-import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
+
+import express from "express";
 import cors from "cors";
 import connectDB from "./config/db.js";
 import connectCloudinary from "./config/cloudinary.js";
@@ -10,34 +12,33 @@ import orderRouter from "./routes/order.route.js";
 
 const app = express();
 
+const port = process.env.PORT || 4000;
+
+// Database & Cloudinary
+connectDB();
+connectCloudinary();
+
+// Middlewares
 app.use(
   cors({
     origin: "https://ecommerce-frontend-flame-ten.vercel.app",
   })
 );
 
-// App config
-dotenv.config();
-const port = process.env.PORT || 4000;
-connectDB()
-connectCloudinary() 
-
-// Middlewares
 app.use(express.json());
 
+// API endpoints
+app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
-
-// APi end points
-app.use("/api/user", userRouter)
-app.use("/api/product", productRouter)
-app.use("/api/cart", cartRouter)
-app.use("/api/order", orderRouter)
-
-app.get("/" , (req, res) => {
-  res.send("API WORKING")
-})
+// Health check
+app.get("/", (req, res) => {
+  res.send("API WORKING");
+});
 
 // Server
 app.listen(port, () => {
-  console.log("Server is started on PORT: " + port);
+  console.log(`Server is started on PORT: ${port}`);
 });
