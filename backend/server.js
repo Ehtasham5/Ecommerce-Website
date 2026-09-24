@@ -21,7 +21,7 @@ connectCloudinary();
 // Middlewares
 app.use(
   cors({
-    origin: "https://ecommerce-frontend-flame-ten.vercel.app",
+    origin: "https://forever-ecommerce-dnrj.vercel.app",
   })
 );
 
